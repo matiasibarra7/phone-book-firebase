@@ -8,6 +8,7 @@ function App() {
   const [userList, setUserList] = useState([])
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(false)
+  const [IdToUpdate, setIdToUpdate] = useState(null)
   
 
   useEffect( ()=> {
@@ -18,6 +19,39 @@ function App() {
     try {
       await db.collection('phoneBook').doc(id).delete();
       console.log("eliminado");
+      getUsers()
+    }
+    catch (e) {
+      console.log(e);
+    }
+  }
+
+  const editPerson = async(id) => {
+    try {
+      const person = await db.collection('phoneBook').doc(id).get()
+      const {name, phone} = person.data()
+      setPhoneInput(phone)
+      setNameInput(name)
+      console.log(name, phone);
+      setIdToUpdate(id)
+    }
+    catch (e) {
+      console.log(e)
+    }
+  }
+
+  const updatePerson = async(e) => {
+    e.preventDefault()
+    const updatePerson = {
+      name: nameInput,
+      phone: phoneInput
+    };
+    try {
+      await db.collection('phoneBook').doc(IdToUpdate).set(updatePerson)
+      console.log("Se actualizó!");
+      setIdToUpdate(null)
+      setPhoneInput('')
+      setNameInput('')
       getUsers()
     }
     catch (e) {
@@ -70,11 +104,17 @@ function App() {
       <div className="row">
         <div className="col">
           <h2>New User</h2>
-          <form className="form-group" onSubmit={newUser}>
+          <form className="form-group" onSubmit={IdToUpdate? updatePerson : newUser}>
             <input type="text" value={nameInput} onChange={(e) => setNameInput(e.target.value)} className="form-control" placeholder="Type a name"/>
             <input type="number" value={phoneInput} onChange={(e) => setPhoneInput(e.target.value)} className="form-control" placeholder="Type a number phone"/>
             <div className="d-grid gap-2">
-              <input type="submit" value="Add user" className="btn btn-dark btn-block mt-3"/>
+
+              {IdToUpdate?
+                <input type="submit" value="Update user" className="btn btn-primary btn-block mt-3"/>
+                :
+                <input type="submit" value="Add user" className="btn btn-dark btn-block mt-3"/>
+              }
+
             </div>
           </form>
           {error? 
@@ -97,13 +137,13 @@ function App() {
                     <div className="col">{el.name}</div>
                     <div className="col">{el.phone}</div>
                     <div className="col btn-group float-end">
+                      <button className="btn btn-secondary" onClick={() => editPerson(el.id)}>Update</button>
                       <button className="btn btn-danger" onClick={() => deletePerson(el.id)}>Delete</button>
-                      {/* <button className="btn btn-danger">asd</button> */}
                     </div>
                   </div>
                 </li>)
               })
-              : <div>There isn't people here...</div>
+              : <div>There aren't people here...</div>
             }
           </ul>
         </div>

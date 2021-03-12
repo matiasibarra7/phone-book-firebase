@@ -11,7 +11,7 @@ function Menu() {
     auth.onAuthStateChanged( (user) => {
       if (user) {
         setUser(user.email)
-        console.log(user)
+        /* console.log(user) */
       }
     })
   }, [])
@@ -19,7 +19,6 @@ function Menu() {
   const logout = () => {
     auth.signOut()
       .then(res => {
-        console.log("te deslogueaste")
         setUser(null)
         history.push('/')
       })

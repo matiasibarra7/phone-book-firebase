@@ -36,7 +36,7 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}  />
         </div>
         <div className="mb-3">
-          <input type="submit" className="btn btn-dark btn-block mt-4 w-100" value="Registrar Usuario"/>
+          <input type="submit" className="btn btn-dark btn-block mt-4 w-100" value="Sign up"/>
         </div>
         {error?
           <div className="text-danger mb-2">{error}</div>

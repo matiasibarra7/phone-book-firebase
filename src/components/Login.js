@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {auth} from '../firebaseConfig'
-import {useHistory} from 'react-router-dom'
+import {useHistory, Link} from 'react-router-dom'
 
 function Login() {
   const [email, setEmail] = useState('')
@@ -13,7 +13,6 @@ function Login() {
 
     auth.signInWithEmailAndPassword(email, password)
       .then((res) => {
-        console.log(res)
         setError(null)
         history.push('/')
       })
@@ -36,12 +35,13 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}  />
         </div>
         <div className="mb-3">
-          <input type="submit" className="btn btn-dark btn-block mt-4 w-100" value="Ingresar"/>
+          <input type="submit" className="btn btn-dark btn-block mt-4 w-100" value="Log In"/>
         </div>
         {error?
           <div className="text-danger mb-2">{error}</div>
           : <></>
         }
+        <div className="mb-2">Don't have an account? <Link to="/register">Sign up</Link> </div>
       </form>
     </>
   );

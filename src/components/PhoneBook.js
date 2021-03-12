@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { db, auth } from '../firebaseConfig'
+import { db } from '../firebaseConfig'
 
 
-function PhoneBook() {
+function PhoneBook(props) {
   const [nameInput, setNameInput] = useState("")
   const [phoneInput, setPhoneInput] = useState('')
   const [contacts, setContacts] = useState([])
@@ -12,26 +12,22 @@ function PhoneBook() {
 
   const [loadingAdd, setLoadingAdd] = useState(false)
   const [loadingPeople, setLoadingPeople] = useState(false)
-
-  const [currentUserId, setCurrentUserId] = useState(null)
   
   useEffect( ()=> {
-    auth.onAuthStateChanged( (user) => {
-      if (user) {
-        setCurrentUserId(user.uid)
-      }
-    });
     
     getContacts()
+    console.log("contactos: ", contacts);
   }, [])
 
   const getContacts = async() => {
     setLoadingPeople(true)
     try {
-      const { docs } = await db.collection(`phoneBook-${currentUserId}`).get();
+      console.log("currentUser ", props.currentUser)
+      const { docs } = await db.collection(`phoneBook-${props.currentUser}`).get();
       const dataUsers = docs.map(el => { return {id: el.id, ...el.data()}})
       setContacts(dataUsers)
       setLoadingPeople(false)
+      console.log("desde el async");
     }
     catch (e) {
       console.log(e);
@@ -55,7 +51,7 @@ function PhoneBook() {
         phone: phoneInput
       };
       try {
-        await db.collection(`phoneBook-${currentUserId}`).add(newObjectContact);
+        await db.collection(`phoneBook-${props.currentUser}`).add(newObjectContact);
         setNameInput('')
         setPhoneInput('')
         setSuccess(true)
@@ -76,7 +72,7 @@ function PhoneBook() {
 
   const editContact = async(id) => {
     try {
-      const person = await db.collection(`phoneBook-${currentUserId}`).doc(id).get()
+      const person = await db.collection(`phoneBook-${props.currentUser}`).doc(id).get()
       const {name, phone} = person.data()
       setPhoneInput(phone)
       setNameInput(name)
@@ -95,7 +91,7 @@ function PhoneBook() {
       phone: phoneInput
     };
     try {
-      await db.collection(`phoneBook-${currentUserId}`).doc(IdToUpdate).set(updatedContact)
+      await db.collection(`phoneBook-${props.currentUser}`).doc(IdToUpdate).set(updatedContact)
       setIdToUpdate(null)
       setPhoneInput('')
       setNameInput('')
@@ -109,7 +105,7 @@ function PhoneBook() {
 
   const deleteContact = async(id) => {
     try {
-      await db.collection(`phoneBook-${currentUserId}`).doc(id).delete();
+      await db.collection(`phoneBook-${props.currentUser}`).doc(id).delete();
       getContacts()
     }
     catch (e) {

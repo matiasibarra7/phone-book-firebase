@@ -1,25 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import { Link, useHistory } from 'react-router-dom'
 import { auth } from '../firebaseConfig'
 
 
-function Menu() {
-  const [user, setUser] = useState(null)
-  const history = useHistory()
+function Menu(props) {
 
-  useEffect(() => {
-    auth.onAuthStateChanged( (user) => {
-      if (user) {
-        setUser(user.email)
-        /* console.log(user) */
-      }
-    })
-  }, [])
+  const history = useHistory()
 
   const logout = () => {
     auth.signOut()
       .then(res => {
-        setUser(null)
         history.push('/')
       })
       .catch(error => {
@@ -27,14 +17,13 @@ function Menu() {
       })
   }
 
-
   return (
     <>
     <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
       <div className="container-fluid">
         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
           <li className="nav-item"><Link className="nav-link" to='/'>Home</Link></li>
-          {user?
+          {props.currentUser?
             <>
               <li className="nav-item"><Link className="nav-link" to='/phone-book'>Phone-book</Link></li>
             </>
@@ -45,7 +34,7 @@ function Menu() {
             </>
           }
         </ul>
-        {user?
+        {props.currentUser?
           <button className="btn btn-danger" onClick={logout}>Logout</button>
           : <></>
         }

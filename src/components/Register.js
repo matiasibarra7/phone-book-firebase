@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {auth} from '../firebaseConfig'
 import {useHistory} from 'react-router-dom'
 
-function Login() {
+function Register(props) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(null)
@@ -10,10 +10,9 @@ function Login() {
 
   const registerUser = (e) => {
     e.preventDefault();
-
     auth.createUserWithEmailAndPassword(email, password)
       .then((res) => {
-        alert("se registró el usuario")
+        props.showMessage("Great! Now you can use your own Phone book!")
         setError(null)
         history.push('/')
       })
@@ -47,4 +46,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;

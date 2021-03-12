@@ -14,7 +14,7 @@ function PhoneBook(props) {
   const [loadingPeople, setLoadingPeople] = useState(false)
   
   useEffect( ()=> {
-    
+
     getContacts()
     console.log("contactos: ", contacts);
   }, [])

@@ -6,12 +6,14 @@ import Menu from './components/Menu'
 import Login from './components/Login'
 import Register from './components/Register'
 
+
 import { auth } from './firebaseConfig'
 
 
 
 function App() {
   const [currentUserId, setCurrentUserId] = useState(null)
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     auth.onAuthStateChanged( (user) => {
@@ -21,24 +23,27 @@ function App() {
         setCurrentUserId(null)
       }
     });
+    
   })
 
+  const showMessage = (msg) => {
+    setMessage(msg)
+  }
 
   return (
     <HashRouter basename='/'>
 
       <Menu currentUser={currentUserId} />
 
-
       <Switch>
         <Route exact path="/">
-          <Home />
+          <Home msg = {message} showMessage = {showMessage}  />
         </Route>
         <Route path="/login">
           <Login />
         </Route>
         <Route path="/register">
-          <Register />
+          <Register showMessage = {showMessage} />
         </Route>
         <Route path="/phone-book">
           <PhoneBook currentUser={currentUserId}/>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { db } from '../firebaseConfig'
+import { db, auth } from '../firebaseConfig'
 
 
 function PhoneBook() {
@@ -12,58 +12,23 @@ function PhoneBook() {
 
   const [loadingAdd, setLoadingAdd] = useState(false)
   const [loadingPeople, setLoadingPeople] = useState(false)
+
+  const [currentUserId, setCurrentUserId] = useState(null)
   
   useEffect( ()=> {
-    getUsers()
+    auth.onAuthStateChanged( (user) => {
+      if (user) {
+        setCurrentUserId(user.uid)
+      }
+    });
+    
+    getContacts()
   }, [])
 
-  const deletePerson = async(id) => {
-    try {
-      await db.collection('phoneBook').doc(id).delete();
-      getUsers()
-    }
-    catch (e) {
-      console.log(e);
-    }
-  }
-
-  const editPerson = async(id) => {
-    try {
-      const person = await db.collection('phoneBook').doc(id).get()
-      const {name, phone} = person.data()
-      setPhoneInput(phone)
-      setNameInput(name)
-      setIdToUpdate(id)
-    }
-    catch (e) {
-      console.log(e)
-    }
-  }
-
-  const updatePerson = async(e) => {
-    e.preventDefault()
-    setLoadingAdd(true)
-    const updatePerson = {
-      name: nameInput,
-      phone: phoneInput
-    };
-    try {
-      await db.collection('phoneBook').doc(IdToUpdate).set(updatePerson)
-      setIdToUpdate(null)
-      setPhoneInput('')
-      setNameInput('')
-      getUsers()
-      setLoadingAdd(false)
-    }
-    catch (e) {
-      console.log(e);
-    }
-  }
-
-  const getUsers = async() => {
+  const getContacts = async() => {
     setLoadingPeople(true)
     try {
-      const { docs } = await db.collection('phoneBook').get();
+      const { docs } = await db.collection(`phoneBook-${currentUserId}`).get();
       const dataUsers = docs.map(el => { return {id: el.id, ...el.data()}})
       setContacts(dataUsers)
       setLoadingPeople(false)
@@ -71,10 +36,9 @@ function PhoneBook() {
     catch (e) {
       console.log(e);
     }
-
   }
 
-  const newUser = async(e) => {
+  const newContact = async(e) => {
     e.preventDefault();
     
     if (!nameInput.trim()) {
@@ -86,16 +50,16 @@ function PhoneBook() {
       setLoadingAdd(true)
 
 
-      const newPerson = {
+      const newObjectContact = {
         name: nameInput,
         phone: phoneInput
       };
       try {
-        await db.collection('phoneBook').add(newPerson);
+        await db.collection(`phoneBook-${currentUserId}`).add(newObjectContact);
         setNameInput('')
         setPhoneInput('')
         setSuccess(true)
-        getUsers()
+        getContacts()
         setLoadingAdd(false)
 
         setTimeout(() => {
@@ -105,11 +69,52 @@ function PhoneBook() {
       catch(e) {
         console.log(e);
       }
-
     }
+  }
 
+  
 
+  const editContact = async(id) => {
+    try {
+      const person = await db.collection(`phoneBook-${currentUserId}`).doc(id).get()
+      const {name, phone} = person.data()
+      setPhoneInput(phone)
+      setNameInput(name)
+      setIdToUpdate(id)
+    }
+    catch (e) {
+      console.log(e)
+    }
+  }
 
+  const updateContact = async(e) => {
+    e.preventDefault()
+    setLoadingAdd(true)
+    const updatedContact = {
+      name: nameInput,
+      phone: phoneInput
+    };
+    try {
+      await db.collection(`phoneBook-${currentUserId}`).doc(IdToUpdate).set(updatedContact)
+      setIdToUpdate(null)
+      setPhoneInput('')
+      setNameInput('')
+      getContacts()
+      setLoadingAdd(false)
+    }
+    catch (e) {
+      console.log(e);
+    }
+  }
+
+  const deleteContact = async(id) => {
+    try {
+      await db.collection(`phoneBook-${currentUserId}`).doc(id).delete();
+      getContacts()
+    }
+    catch (e) {
+      console.log(e);
+    }
   }
 
 
@@ -118,7 +123,7 @@ function PhoneBook() {
             <div className="row">
               <div className="col">
                 <h2>New contact</h2>
-                <form className="form-group" onSubmit={IdToUpdate? updatePerson : newUser}>
+                <form className="form-group" onSubmit={IdToUpdate? updateContact : newContact}>
                   <input type="text" value={nameInput} onChange={(e) => setNameInput(e.target.value)} className="form-control" placeholder="Type a name"/>
                   <input type="number" value={phoneInput} onChange={(e) => setPhoneInput(e.target.value)} className="form-control" placeholder="Type a number phone"/>
                   <div className="d-grid gap-2">
@@ -181,13 +186,17 @@ function PhoneBook() {
                                     <div className="col">{el.name}</div>
                                     <div className="col">{el.phone}</div>
                                     <div className="col btn-group float-end">
-                                      <button className="btn btn-secondary" onClick={() => editPerson(el.id)}>Update</button>
-                                      <button className="btn btn-danger" onClick={() => deletePerson(el.id)}>Delete</button>
+                                      <button className="btn btn-secondary" onClick={() => editContact(el.id)}>Update</button>
+                                      <button className="btn btn-danger" onClick={() => deleteContact(el.id)}>Delete</button>
                                     </div>
                                   </div>
                                 </li>)
                             })
-                          : <div>There aren't people here...</div>
+                          : 
+                            <>
+                              <div>It seems that there are no people here...</div>
+                              <div>Try adding a new contact!</div>
+                            </>
                         }
                       </>
                   }

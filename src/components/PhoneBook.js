@@ -14,20 +14,37 @@ function PhoneBook(props) {
   const [loadingPeople, setLoadingPeople] = useState(false)
   
   useEffect( ()=> {
-
+    const getContacts = async() => {
+      setLoadingPeople(true)
+      try {
+        /* console.log("currentUser ", props.currentUser) */
+        
+        if (props.currentUser) {
+          const { docs } = await db.collection(`phoneBook-${props.currentUser}`).get();
+          const dataUsers = docs.map(el => { return {id: el.id, ...el.data()}})
+          setContacts(dataUsers)
+          setLoadingPeople(false)
+        }
+      }
+      catch (e) {
+        console.log(e);
+      }
+    }
     getContacts()
-    console.log("contactos: ", contacts);
-  }, [])
+
+  }, [props.currentUser])
 
   const getContacts = async() => {
     setLoadingPeople(true)
     try {
-      console.log("currentUser ", props.currentUser)
-      const { docs } = await db.collection(`phoneBook-${props.currentUser}`).get();
-      const dataUsers = docs.map(el => { return {id: el.id, ...el.data()}})
-      setContacts(dataUsers)
-      setLoadingPeople(false)
-      console.log("desde el async");
+      /* console.log("currentUser ", props.currentUser) */
+
+      if (props.currentUser) {
+        const { docs } = await db.collection(`phoneBook-${props.currentUser}`).get();
+        const dataUsers = docs.map(el => { return {id: el.id, ...el.data()}})
+        setContacts(dataUsers)
+        setLoadingPeople(false)
+      }
     }
     catch (e) {
       console.log(e);

@@ -20,7 +20,7 @@ function App() {
       if (user) {
         setCurrentUserId(user.uid)
       } else {
-        setCurrentUserId(null)
+        setCurrentUserId('noOne')
       }
     });
     

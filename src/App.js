@@ -5,6 +5,7 @@ import Home from './components/Home'
 import Menu from './components/Menu'
 import Login from './components/Login'
 import Register from './components/Register'
+import Profile from './components/Profile'
 
 
 import { auth } from './firebaseConfig'
@@ -17,6 +18,7 @@ function App() {
 
   useEffect(() => {
     auth.onAuthStateChanged( (user) => {
+      /* console.log(user) */
       if (user) {
         setCurrentUserId(user.uid)
       } else {
@@ -47,6 +49,9 @@ function App() {
         </Route>
         <Route path="/phone-book">
           <PhoneBook currentUser={currentUserId}/>
+        </Route>
+        <Route path="/profile">
+          <Profile currentUser={currentUserId}/>
         </Route>
       </Switch>
     </HashRouter>

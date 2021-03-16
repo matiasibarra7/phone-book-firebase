@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { store, db } from "../firebaseConfig";
+import React, { useState, useEffect } from 'react';
+import { store, db, /* auth */ } from "../firebaseConfig";
 
 function Profile(props) {
 
@@ -9,37 +9,70 @@ function Profile(props) {
 
   const [imageProfileURL, setImageProfileURL] = useState(null)
 
+  const [loadingDataProfile, setLoadingDataProfile] = useState(true)
 
+  useEffect(() => {
+    setLoadingDataProfile(true)
+    const getImageProfile = async() => {
+      try {
+        if (props.currentUser) {
+          const imgURL = await store.ref(`/images/${props.currentUser}`).getDownloadURL()
+          setImageProfileURL(imgURL)
+          setLoadingDataProfile(false)
+        }
+      }
+      catch (e) {
+        console.log(e);
+        setImageProfileURL(null)
+      }
+      console.log("Efecto!");
+    }
+
+
+    getImageProfile()
+  }, [props.currentUser])
 
   const getImageProfile = async() => {
+    console.log("out the useEffect");
     try {
-      const algo = await store.ref(`/images/${props.currentUser}`).getDownloadURL()
-      console.log(algo);
-      setImageProfileURL(algo)
+      if (props.currentUser) {
+        const imgURL = await store.ref(`/images/${props.currentUser}`).getDownloadURL()
+        setImageProfileURL(imgURL)
+        setLoadingDataProfile(false)
+
+      }
     }
     catch (e) {
       console.log(e);
+      setImageProfileURL(null)
     }
-
   }
+
 
   const updateProfile = async(e) => {
     e.preventDefault()
+    setLoadingDataProfile(true)
+
     const userData = {
       nick: nick,
       gender: gender
     }
     try {
-      await db.collection(`Users-Data-${props.currentUser}`).add(userData)
-      store.ref(`/images/${props.currentUser}`).put(imageFile)
+      /* db.collection(`phoneBook-${props.currentUser}`).doc(IdToUpdate).set(updatedContact) */
+      await db.collection(`Users-Data`).doc(props.currentUser).set(userData)
+      // Esto sube  la image
+      console.log("fin de carga de data");
+      await store.ref(`/images/${props.currentUser}`).put(imageFile)
+      console.log("fin de carga de img");
+      /* .getDownloadURL() */
+      await getImageProfile()
+      console.log("fin de get img");
     }
     catch {
       console.log(e);
     }
-    // Esto sube  la image
-/*     store.ref(`/images/${imageFile.name}`).put(imageFile) */
 
-    console.log(userData)
+    /* console.log(userData) */
   }
 
 
@@ -47,7 +80,7 @@ function Profile(props) {
   return (
     <div className="container">
       <h1 className="text-center mt-2">Profile</h1>
-      <h2 className="text-center mt-2">Usuario {props.currentUser}</h2>
+      {/* <h2 className="text-center mt-2">Usuario {props.currentUser}</h2> */}
       <div className="row mt-5">
         <div className="col">
           <form onSubmit={updateProfile} className="form-control" style={{maxWidth:"480px"}}>
@@ -73,14 +106,27 @@ function Profile(props) {
           </form>
         </div>
         <div className="col">
-          <h4>User's Details</h4>
-          <button onClick={getImageProfile}>Get Profile Pic</button>
-          {imageProfileURL?
-            <figure>
-              <img className="img-fluid" src={imageProfileURL} alt=""/>
-            </figure>
+          <h4 className="text-center"> User's Details </h4>
+          {loadingDataProfile?
+            <div className="text-center">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            </div>
+
             :
-            <></>
+            <>
+              {/* <button onClick={getImageProfile}>Get Profile Pic</button> */}
+              {imageProfileURL?
+                <div className="text-center">
+                    <img className="img-fluid mx-auto rounded" style={{width:"70%"}} src={imageProfileURL} alt=""/>
+                </div>
+                :
+                <div className="text-center">
+                  <img className="img-fluid mx-auto rounded" style={{width:"70%"}} src="/phone-book-firebase/images/unnamed.jpg" alt=""/>
+                </div>
+              }
+            </>
           }
 
         </div>

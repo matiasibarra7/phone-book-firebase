@@ -3,7 +3,7 @@ import { db } from '../firebaseConfig'
 
 
 function PhoneBook(props) {
-  const [nameInput, setNameInput] = useState("")
+  const [nameInput, setNameInput] = useState('')
   const [phoneInput, setPhoneInput] = useState('')
   const [contacts, setContacts] = useState([])
   const [error, setError] = useState(null)

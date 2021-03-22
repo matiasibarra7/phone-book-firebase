@@ -8,25 +8,44 @@ import Register from './components/Register'
 import Profile from './components/Profile'
 
 
-import { auth } from './firebaseConfig'
+import { auth, db } from './firebaseConfig'
 
 
 
 function App() {
   const [currentUserId, setCurrentUserId] = useState(null)
+  const [currentUserData, setCurrentUserData] = useState(null)
+
   const [message, setMessage] = useState(null)
 
   useEffect(() => {
+
+
+    const getDataProfile = async(id) => {
+      try {
+        const dataUser = await db.collection(`Users-Data`).doc(id).get()
+        setCurrentUserData({...dataUser.data(), id: id})
+        /* console.log({...dataUser.data(), id: id}); */
+      }
+      catch (e) {
+        console.log(e);
+      }
+
+    }
+
+
+
     auth.onAuthStateChanged( (user) => {
-      /* console.log(user) */
       if (user) {
         setCurrentUserId(user.uid)
+        getDataProfile(user.uid)
       } else {
         setCurrentUserId('noOne')
+        setCurrentUserData(null)
       }
     });
     
-  })
+  }, [])
 
   const showMessage = (msg) => {
     setMessage(msg)
@@ -35,7 +54,7 @@ function App() {
   return (
     <HashRouter basename='/'>
 
-      <Menu currentUser={currentUserId} />
+      <Menu currentUser={currentUserId} userData={currentUserData}/>
 
       <Switch>
         <Route exact path="/">
@@ -51,7 +70,7 @@ function App() {
           <PhoneBook currentUser={currentUserId}/>
         </Route>
         <Route path="/profile">
-          <Profile currentUser={currentUserId}/>
+          <Profile currentUser={currentUserId} setCurrentUserData={setCurrentUserData} currentUserData={currentUserData}/>
         </Route>
       </Switch>
     </HashRouter>

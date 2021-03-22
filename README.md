@@ -6,7 +6,7 @@ Esta basado en la ejercitación propuesta en la sección 7 del curso [Aprende Re
 
 [Ver el resultado online](https://matiasibarra7.github.io/phone-book-firebase/)
 
-Para probarlo, basta con crear un usuario con cualquier email e ir a la sección Phone-book que aparece en la barra superior. 
+Para probarlo, puedes crear un usuario con cualquier email e ir a la sección Phone-book o Profile que aparece en la barra superior. 
 
 También puede utilizarse este usuario de ejemplo:
 

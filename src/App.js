@@ -47,14 +47,37 @@ function App() {
     
   }, [])
 
+
+  const denyFeature = (e) => {
+    e.preventDefault()
+    showMessage("deny")
+  }
+
   const showMessage = (msg) => {
-    setMessage(msg)
+    if (msg === "deny") {
+      setMessage("This operation is reserved for register users only. If you wanna try it, please, register with a email (Not necessary a real one) and try again")
+      setTimeout(()=>{
+        setMessage(null)
+      }, 10000)
+    } else {
+      setMessage(msg)
+      setTimeout(()=>{
+        setMessage(null)
+      }, 4000)
+    }
   }
 
   return (
     <HashRouter basename='/'>
 
       <Menu currentUser={currentUserId} userData={currentUserData}/>
+
+      {message?
+        <div className="alert alert-success" role="alert">
+          {message}
+        </div>
+        :  <></>
+      }
 
       <Switch>
         <Route exact path="/">
@@ -67,10 +90,10 @@ function App() {
           <Register showMessage = {showMessage} />
         </Route>
         <Route path="/phone-book">
-          <PhoneBook currentUser={currentUserId}/>
+          <PhoneBook currentUser={currentUserId} denyFeature={denyFeature}/>
         </Route>
         <Route path="/profile">
-          <Profile currentUser={currentUserId} setCurrentUserData={setCurrentUserData} currentUserData={currentUserData}/>
+          <Profile currentUserId={currentUserId} setCurrentUserData={setCurrentUserData} currentUserData={currentUserData} denyFeature={denyFeature}/>
         </Route>
       </Switch>
     </HashRouter>

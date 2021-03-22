@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { store, db, /* auth */ } from "../firebaseConfig";
 
+const exampleUser = "P5N8GPwMlwbegabdHgewSN0q0YO2"
+
 function Profile(props) {
 
   const [nick, setNick] = useState('')
@@ -18,8 +20,8 @@ function Profile(props) {
 
     const getImageProfile = async() => {
       try {
-        if (props.currentUser) {
-          const imgURL = await store.ref(`/images/${props.currentUser}`).getDownloadURL()
+        if (props.currentUserId) {
+          const imgURL = await store.ref(`/images/${props.currentUserId}`).getDownloadURL()
           setImageProfileURL(imgURL)
           setLoadingDataProfile(false)
         }
@@ -34,14 +36,14 @@ function Profile(props) {
 
     setDataProfile(props.currentUserData)
     getImageProfile()
-  }, [props.currentUser, props.currentUserData])
+  }, [props.currentUserId, props.currentUserData])
 
   /* Same methods outside effect */ 
   const getImageProfile = async() => {
     console.log("out the useEffect");
     try {
-      if (props.currentUser) {
-        const imgURL = await store.ref(`/images/${props.currentUser}`).getDownloadURL()
+      if (props.currentUserId) {
+        const imgURL = await store.ref(`/images/${props.currentUserId}`).getDownloadURL()
         setImageProfileURL(imgURL)
         /* setLoadingDataProfile(false) */
 
@@ -55,14 +57,14 @@ function Profile(props) {
   /* End same methods outside effect */ 
 
   const getDataProfile = async() => {
-    if (props.currentUser) {
+    if (props.currentUserId) {
       try {
-        const dataUser = await db.collection(`Users-Data`).doc(props.currentUser).get()
+        const dataUser = await db.collection(`Users-Data`).doc(props.currentUserId).get()
         /* console.log(dataUser.data()); */
         setDataProfile(dataUser.data())
 
         // i dont know, man
-        const algo = {...dataUser.data(), id: props.currentUser}
+        const algo = {...dataUser.data(), id: props.currentUserId}
         props.setCurrentUserData(algo)
       }
       catch (e) {
@@ -82,12 +84,12 @@ function Profile(props) {
       gender: gender
     }
     try {
-      /* db.collection(`phoneBook-${props.currentUser}`).doc(IdToUpdate).set(updatedContact) */
-      await db.collection(`Users-Data`).doc(props.currentUser).set(userDataUpdated)
+      /* db.collection(`phoneBook-${props.currentUserId}`).doc(IdToUpdate).set(updatedContact) */
+      await db.collection(`Users-Data`).doc(props.currentUserId).set(userDataUpdated)
       // Esto sube  la image
       console.log("fin de carga de data");
       if (imageFile) {
-        await store.ref(`/images/${props.currentUser}`).put(imageFile)
+        await store.ref(`/images/${props.currentUserId}`).put(imageFile)
         await getImageProfile()
         console.log("fin de carga de img");
       }
@@ -104,11 +106,10 @@ function Profile(props) {
   }
 
 
-
   return (
     <div className="container">
       <h1 className="text-center mt-2">Profile</h1>
-      {/* <h2 className="text-center mt-2">Usuario {props.currentUser}</h2> */}
+      {/* <h2 className="text-center mt-2">Usuario {props.currentUserId}</h2> */}
       <div className="row mt-5">
 
 
@@ -158,7 +159,7 @@ function Profile(props) {
         </div>
 
         <div className="col">
-          <form onSubmit={updateProfile} className="form-control" style={{maxWidth:"480px"}}>
+          <form onSubmit={props.currentUserId === exampleUser? props.denyFeature : updateProfile} className="form-control" style={{maxWidth:"480px"}}>
             <h4>Edit Profile</h4>
             <div className="mb-3">
               <label htmlFor="username" className="form-label">Name</label>

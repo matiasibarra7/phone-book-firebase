@@ -8,8 +8,10 @@ Obtiene inspiración de la ejercitación propuesta en la sección 7 del curso [A
 
 Para probarlo, puedes crear un usuario con cualquier email e ir a la sección Phone-book o Profile de la barra superior. 
 
-También puede utilizarse este usuario de ejemplo:
+También puede visualizar la aplicación con datos cargados utilizando este usuario de ejemplo:
 
 |Usuario | Contraseña |
 |--------|---------|
 |user@example.com | userExample|
+
+Sin embargo, las funcionalidades no están permitidas con este usuario, solo cumple fines demostrativos. 

@@ -12,7 +12,7 @@ function Register(props) {
     e.preventDefault();
     auth.createUserWithEmailAndPassword(email, password)
       .then((res) => {
-        props.showMessage("Great! Now you can use your own Phone book!")
+        props.showMessage("Great! Now you can use your own Phone book and personalize your profile!")
         setError(null)
         history.push('/')
       })

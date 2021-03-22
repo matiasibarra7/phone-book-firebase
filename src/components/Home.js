@@ -1,23 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
-function Home(props) {
-  useEffect(() => {
-    if (props.msg) {
-      setTimeout(()=>{
-        props.showMessage(null)
-      }
-      ,3000)
-    }
-  })
+function Home() {
 
   return (
     <>
-      {props.msg?
-        <div className="alert alert-success" role="alert">
-          {props.msg}
-        </div>
-        :  <></>
-      }
       <h1 className="text-center mt-2">Home</h1>
     </>
   );

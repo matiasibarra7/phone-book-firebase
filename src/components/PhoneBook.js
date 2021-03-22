@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { db } from '../firebaseConfig'
 
+const exampleUser = "P5N8GPwMlwbegabdHgewSN0q0YO2"
+
 
 function PhoneBook(props) {
   const [nameInput, setNameInput] = useState('')
@@ -54,35 +56,42 @@ function PhoneBook(props) {
   const newContact = async(e) => {
     e.preventDefault();
     
-    if (!nameInput.trim()) {
-      setError("Name can't be blanck")
-    } else if (!phoneInput) {
-      setError("Phone can't be blanck")
+    if (props.currentUser === exampleUser) {
+      props.denyFeature(e)
     } else {
-      setError(null)
-      setLoadingAdd(true)
 
-
-      const newObjectContact = {
-        name: nameInput,
-        phone: phoneInput
-      };
-      try {
-        await db.collection(`phoneBook-${props.currentUser}`).add(newObjectContact);
-        setNameInput('')
-        setPhoneInput('')
-        setSuccess(true)
-        getContacts()
-        setLoadingAdd(false)
-
-        setTimeout(() => {
-          setSuccess(false)
-        }, 3000)
+      if (!nameInput.trim()) {
+        setError("Name can't be blanck")
+      } else if (!phoneInput) {
+        setError("Phone can't be blanck")
+      } else {
+        setError(null)
+        setLoadingAdd(true)
+  
+  
+        const newObjectContact = {
+          name: nameInput,
+          phone: phoneInput
+        };
+        try {
+          await db.collection(`phoneBook-${props.currentUser}`).add(newObjectContact);
+          setNameInput('')
+          setPhoneInput('')
+          setSuccess(true)
+          getContacts()
+          setLoadingAdd(false)
+  
+          setTimeout(() => {
+            setSuccess(false)
+          }, 3000)
+        }
+        catch(e) {
+          console.log(e);
+        }
       }
-      catch(e) {
-        console.log(e);
-      }
+
     }
+
   }
 
   
@@ -198,9 +207,9 @@ function PhoneBook(props) {
                                   <div className="row"> 
                                     <div className="col">{el.name}</div>
                                     <div className="col">{el.phone}</div>
-                                    <div className="col btn-group float-end">
-                                      <button className="btn btn-secondary" onClick={() => editContact(el.id)}>Update</button>
-                                      <button className="btn btn-danger" onClick={() => deleteContact(el.id)}>Delete</button>
+                                    <div className="col btn-group float-end"> {/* denyFeature={denyFeature} */}
+                                      <button className="btn btn-secondary" onClick={props.currentUser === exampleUser? props.denyFeature : () => editContact(el.id)}>Update</button>
+                                      <button className="btn btn-danger" onClick={props.currentUser === exampleUser? props.denyFeature : () => deleteContact(el.id)}>Delete</button>
                                     </div>
                                   </div>
                                 </li>)

@@ -55,7 +55,7 @@ function App() {
 
   const showMessage = (msg) => {
     if (msg === "deny") {
-      setMessage("This operation is reserved for register users only. If you wanna try it, please, register with a email (Not necessary a real one) and try again")
+      setMessage("This operation is reserved for register users only. If you wanna try it, please, register with an email (Not necessary a real one) and try again")
       setTimeout(()=>{
         setMessage(null)
       }, 10000)

@@ -14,4 +14,4 @@ También puede visualizar la aplicación con datos cargados utilizando este usua
 |--------|---------|
 |user@example.com | userExample|
 
-Sin embargo, las funcionalidades no están permitidas con este usuario, solo cumple fines demostrativos. 
+Sin embargo, las funcionalidades no están permitidas con este usuario solo cumple con fines demostrativos. 

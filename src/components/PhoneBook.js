@@ -14,6 +14,13 @@ function PhoneBook(props) {
 
   const [loadingAdd, setLoadingAdd] = useState(false)
   const [loadingPeople, setLoadingPeople] = useState(false)
+
+  const orderContacts = (contacts) => {
+    return contacts.sort((a,b) => {
+      if (a.name.toLowerCase() > b.name.toLowerCase()) { return 1 } 
+        else { return -1 }
+    })
+  }
   
   useEffect( ()=> {
     const getContacts = async() => {
@@ -23,8 +30,9 @@ function PhoneBook(props) {
         
         if (props.currentUser) {
           const { docs } = await db.collection(`phoneBook-${props.currentUser}`).get();
-          const dataUsers = docs.map(el => { return {id: el.id, ...el.data()}})
-          setContacts(dataUsers)
+          const usersData = docs.map(el => { return {id: el.id, ...el.data()}})
+          
+          setContacts(orderContacts(usersData))
           setLoadingPeople(false)
         }
       }
@@ -43,8 +51,8 @@ function PhoneBook(props) {
 
       if (props.currentUser) {
         const { docs } = await db.collection(`phoneBook-${props.currentUser}`).get();
-        const dataUsers = docs.map(el => { return {id: el.id, ...el.data()}})
-        setContacts(dataUsers)
+        const usersData = docs.map(el => { return {id: el.id, ...el.data()}})
+        setContacts(orderContacts(usersData))
         setLoadingPeople(false)
       }
     }

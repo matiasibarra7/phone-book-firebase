@@ -31,7 +31,7 @@ function Profile(props) {
         setImageProfileURL(null)
         setLoadingDataProfile(false)
       }
-      console.log("Efecto!");
+      /* console.log("Efecto!"); */
     }
 
     setDataProfile(props.currentUserData)
@@ -40,7 +40,7 @@ function Profile(props) {
 
   /* Same methods outside effect */ 
   const getImageProfile = async() => {
-    console.log("out the useEffect");
+    /* console.log("out the useEffect"); */
     try {
       if (props.currentUserId) {
         const imgURL = await store.ref(`/images/${props.currentUserId}`).getDownloadURL()
@@ -70,7 +70,7 @@ function Profile(props) {
       catch (e) {
         console.log(e);
       }
-      console.log("Efecto!");
+      /* console.log("Efecto!"); */
     }
   }
 
@@ -87,16 +87,16 @@ function Profile(props) {
       /* db.collection(`phoneBook-${props.currentUserId}`).doc(IdToUpdate).set(updatedContact) */
       await db.collection(`Users-Data`).doc(props.currentUserId).set(userDataUpdated)
       // Esto sube  la image
-      console.log("fin de carga de data");
+      // console.log("fin de carga de data");
       if (imageFile) {
         await store.ref(`/images/${props.currentUserId}`).put(imageFile)
         await getImageProfile()
-        console.log("fin de carga de img");
+        // console.log("fin de carga de img");
       }
       /* .getDownloadURL() */
       await getDataProfile()
       setLoadingDataProfile(false)
-      console.log("fin de get img");
+      // console.log("fin de get img");
     }
     catch {
       console.log(e);

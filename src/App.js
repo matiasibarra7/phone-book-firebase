@@ -6,6 +6,7 @@ import Menu from './components/Menu'
 import Login from './components/Login'
 import Register from './components/Register'
 import Profile from './components/Profile'
+import Footer from './components/Footer/Footer'
 
 
 import { auth, db } from './firebaseConfig'
@@ -71,32 +72,39 @@ function App() {
     <HashRouter basename='/'>
 
       <Menu currentUser={currentUserId} userData={currentUserData}/>
+      <main className="flex-shrink-0">
 
-      {message?
-        <div className="alert alert-success" role="alert">
-          {message}
-        </div>
-        :  <></>
-      }
+        {message?
+          <div className="alert alert-success" role="alert">
+            {message}
+          </div>
+          :  <></>
+        }
 
-      <Switch>
-        <Route exact path="/">
-          <Home msg = {message} showMessage = {showMessage}  />
-        </Route>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/register">
-          <Register showMessage = {showMessage} />
-        </Route>
-        <Route path="/phone-book">
-          <PhoneBook currentUser={currentUserId} denyFeature={denyFeature}/>
-        </Route>
-        <Route path="/profile">
-          <Profile currentUserId={currentUserId} setCurrentUserData={setCurrentUserData} currentUserData={currentUserData} denyFeature={denyFeature}/>
-        </Route>
-      </Switch>
+        <Switch>
+          <Route exact path="/">
+            <Home msg = {message} showMessage = {showMessage}  />
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/register">
+            <Register showMessage = {showMessage} />
+          </Route>
+          <Route path="/phone-book">
+            <PhoneBook currentUser={currentUserId} denyFeature={denyFeature}/>
+          </Route>
+          <Route path="/profile">
+            <Profile currentUserId={currentUserId} setCurrentUserData={setCurrentUserData} currentUserData={currentUserData} denyFeature={denyFeature}/>
+          </Route>
+        </Switch>
+
+      </main>
+
+      <Footer/>
+
     </HashRouter>
+
   );
 }
 

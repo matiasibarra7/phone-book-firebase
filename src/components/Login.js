@@ -23,6 +23,7 @@ function Login() {
 
   return (
     <>
+      <h1 className="text-center mt-2">Login</h1>
       <form className="container-fluid border mt-5" style={{maxWidth:"360px"}} onSubmit={loginUser}>
         <div className="mb-3">
           <label htmlFor="emailInput" className="form-label">Email</label>

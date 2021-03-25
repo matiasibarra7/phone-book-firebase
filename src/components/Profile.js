@@ -120,15 +120,10 @@ function Profile(props) {
   return (
     <div className="container">
       <h1 className="text-center mt-2">Profile</h1>
-      {/* <h2 className="text-center mt-2">Usuario {props.currentUserId}</h2> */}
       <div className="row mt-5">
 
-
-        
-
-
         <div className="col">
-          {/* <h4 className="text-center"> User's Details </h4> */}
+
           {loadingDataProfile?
             <div className="text-center">
               <div className="spinner-border text-primary" role="status">
@@ -137,8 +132,9 @@ function Profile(props) {
             </div>
 
             :
+
             <>
-              <div className="d-flex justify-content-center">
+              <div className="d-flex justify-content-center mb-5">
 
                 <div className="card" style={{width: "18rem"}}>
                   {imageProfileURL?
@@ -146,30 +142,21 @@ function Profile(props) {
                     :
                     <img src="/phone-book-firebase/images/unnamed.jpg" className="card-img-top" alt="..." />
                   }
-            
-                  {dataProfile?
-                    <div className="card-body">
-                      <h5 className="card-title">{dataProfile.nick}</h5>
-                      <p className="card-text">{dataProfile.gender}</p>
-                    </div>
-                    :
-                    <div className="card-body">
-                      <h5 className="card-title">Unknown</h5>
-                      <p className="card-text">No data</p>
-                    </div>
-                  }
-                  
+
+                  <div className="card-body">
+                    <h5 className="card-title">{dataProfile? dataProfile.nick : "Unknown" }</h5>
+                    <p className="card-text">{dataProfile? dataProfile.gender : "No data" }</p>
+                  </div>
+
 
                 </div>
               </div>
-              {/* <button onClick={getImageProfile}>Get Profile Pic</button> */}
-              
             </>
           }
 
         </div>
 
-        <div className="col">
+        <div className="col mb-5">
           <form onSubmit={props.currentUserId === exampleUser? props.denyFeature : updateProfile} className="form-control" style={{maxWidth:"480px"}}>
             <h4>Edit Profile</h4>
             <div className="mb-3">
@@ -200,7 +187,7 @@ function Profile(props) {
         </div>
 
       </div>
-    </ div>
+    </div>
   );
 }
 

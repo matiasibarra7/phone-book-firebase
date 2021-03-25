@@ -149,91 +149,96 @@ function PhoneBook(props) {
 
 
   return (
-    <div className="container mt-5">
-            <div className="row">
-              <div className="col">
-                <h2>New contact</h2>
-                <form className="form-group" onSubmit={IdToUpdate? updateContact : newContact}>
-                  <input type="text" value={nameInput} onChange={(e) => setNameInput(e.target.value)} className="form-control" placeholder="Type a name"/>
-                  <input type="number" value={phoneInput} onChange={(e) => setPhoneInput(e.target.value)} className="form-control" placeholder="Type a number phone"/>
-                  <div className="d-grid gap-2">
+    <>
+      <h1 className="text-center mt-2">Phone Book</h1>
+      <div className="container mt-5">
+        <div className="row">
 
-                    {IdToUpdate?
-                      <>
-                        {loadingAdd?
-                            <div className="btn btn-dark btn-block mt-3">
-                              <div className="spinner-border text-light" role="status">
-                                <span className="visually-hidden">Loading...</span>
-                              </div>
-                            </div>
-                          :
-                            <input type="submit" value="Update contact" className="btn btn-primary btn-block mt-3"/>
-                          }
-                      </>
-                      :
-                      <>
-                        {loadingAdd?
-                          <div className="btn btn-dark btn-block mt-3">
-                            <div className="spinner-border text-light" role="status">
-                              <span className="visually-hidden">Loading...</span>
-                            </div>
+          <div className="col-lg mb-5" >
+            <h2>New contact</h2>
+            <form className="form-group" onSubmit={IdToUpdate? updateContact : newContact}>
+              <input type="text" value={nameInput} onChange={(e) => setNameInput(e.target.value)} className="form-control" placeholder="Type a name"/>
+              <input type="number" value={phoneInput} onChange={(e) => setPhoneInput(e.target.value)} className="form-control" placeholder="Type a number phone"/>
+              <div className="d-grid gap-2">
+
+                {IdToUpdate?
+                  <>
+                    {loadingAdd?
+                        <div className="btn btn-dark btn-block mt-3">
+                          <div className="spinner-border text-light" role="status">
+                            <span className="visually-hidden">Loading...</span>
                           </div>
-                        :
-                          <input type="submit" value="Add contact" className="btn btn-dark btn-block mt-3"/>
-                        }
-                        
-                      </>
-                    }
-
-                  </div>
-                </form>
-                {error? 
-                  <div className="text-danger mt-2">{error}</div>
-                  : <></>
-                }
-                {success?
-                  <div className="text-success mt-2">Person correctly added!</div>
-                  : <></>
-                }
-              </div>
-              <div className="col">
-                <h2>Contact list</h2>
-                <ul className="list-group">
-                  {
-                    loadingPeople?
-                      <li className="list-group-item text-center">
-                        <div className="spinner-border text-primary" role="status">
-                          <span className="visually-hidden">Loading...</span>
-                        </div>                        
-                      </li>
+                        </div>
                       :
-                      <>
-                        { contacts.length?
-                            contacts.map((el,i) => {
-                              return (
-                                <li className="list-group-item" key={el.id + i}>
-                                  <div className="row"> 
-                                    <div className="col">{el.name}</div>
-                                    <div className="col">{el.phone}</div>
-                                    <div className="col btn-group float-end"> {/* denyFeature={denyFeature} */}
-                                      <button className="btn btn-secondary" onClick={props.currentUser === exampleUser? props.denyFeature : () => editContact(el.id)}>Update</button>
-                                      <button className="btn btn-danger" onClick={props.currentUser === exampleUser? props.denyFeature : () => deleteContact(el.id)}>Delete</button>
-                                    </div>
-                                  </div>
-                                </li>)
-                            })
-                          : 
-                            <>
-                              <div>It seems that there are no people here...</div>
-                              <div>Try adding a new contact!</div>
-                            </>
-                        }
-                      </>
-                  }
-                </ul>
+                        <input type="submit" value="Update contact" className="btn btn-primary btn-block mt-3"/>
+                      }
+                  </>
+                  :
+                  <>
+                    {loadingAdd?
+                      <div className="btn btn-dark btn-block mt-3">
+                        <div className="spinner-border text-light" role="status">
+                          <span className="visually-hidden">Loading...</span>
+                        </div>
+                      </div>
+                    :
+                      <input type="submit" value="Add contact" className="btn btn-dark btn-block mt-3"/>
+                    }
+                    
+                  </>
+                }
+
               </div>
-            </div>
+            </form>
+            {error? 
+              <div className="text-danger mt-2">{error}</div>
+              : <></>
+            }
+            {success?
+              <div className="text-success mt-2">Person correctly added!</div>
+              : <></>
+            }
           </div>
+          
+          <div className="col-lg mb-5" >
+            <h2>Contact list</h2>
+            <ul className="list-group">
+              {
+                loadingPeople?
+                  <li className="list-group-item text-center">
+                    <div className="spinner-border text-primary" role="status">
+                      <span className="visually-hidden">Loading...</span>
+                    </div>                        
+                  </li>
+                  :
+                  <>
+                    { contacts.length?
+                        contacts.map((el,i) => {
+                          return (
+                            <li className="list-group-item" key={el.id + i}>
+                              <div className="row"> 
+                                <div className="col">{el.name}</div>
+                                <div className="col">{el.phone}</div>
+                                <div className="col btn-group float-end"> {/* denyFeature={denyFeature} */}
+                                  <button className="btn btn-secondary" onClick={props.currentUser === exampleUser? props.denyFeature : () => editContact(el.id)}>Update</button>
+                                  <button className="btn btn-danger" onClick={props.currentUser === exampleUser? props.denyFeature : () => deleteContact(el.id)}>Delete</button>
+                                </div>
+                              </div>
+                            </li>)
+                        })
+                      : 
+                        <>
+                          <div>It seems that there are no people here...</div>
+                          <div>Try adding a new contact!</div>
+                        </>
+                    }
+                  </>
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+    </>
   )
 }
 

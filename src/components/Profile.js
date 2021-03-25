@@ -8,6 +8,7 @@ function Profile(props) {
   const [nick, setNick] = useState('')
   const [gender, setGender] = useState('')
   const [imageFile, setImageFile] = useState('')
+  const [error, setError] = useState(null)
 
   const [dataProfile, setDataProfile] = useState(props.currentUserData)
 
@@ -77,32 +78,42 @@ function Profile(props) {
 
   const updateProfile = async(e) => {
     e.preventDefault()
-    setLoadingDataProfile(true)
-
-    const userDataUpdated = {
-      nick: nick,
-      gender: gender
-    }
-    try {
-      /* db.collection(`phoneBook-${props.currentUserId}`).doc(IdToUpdate).set(updatedContact) */
-      await db.collection(`Users-Data`).doc(props.currentUserId).set(userDataUpdated)
-      // Esto sube  la image
-      // console.log("fin de carga de data");
-      if (imageFile) {
-        await store.ref(`/images/${props.currentUserId}`).put(imageFile)
-        await getImageProfile()
-        // console.log("fin de carga de img");
+    if (!nick.trim()) {
+      console.log("Name can't be blanck")
+      setError("Name can't be blanck")
+    } else if (!gender) {
+      console.log("A gender must be select")
+      setError("A gender must be select")
+    } else {
+      setError(null)
+      setLoadingDataProfile(true)
+  
+      const userDataUpdated = {
+        nick: nick,
+        gender: gender
       }
-      /* .getDownloadURL() */
-      await getDataProfile()
-      setLoadingDataProfile(false)
-      // console.log("fin de get img");
+      
+      try {
+        /* db.collection(`phoneBook-${props.currentUserId}`).doc(IdToUpdate).set(updatedContact) */
+        await db.collection(`Users-Data`).doc(props.currentUserId).set(userDataUpdated)
+        // Esto sube  la image
+        // console.log("fin de carga de data");
+        if (imageFile) {
+          await store.ref(`/images/${props.currentUserId}`).put(imageFile)
+          await getImageProfile()
+          // console.log("fin de carga de img");
+        }
+        /* .getDownloadURL() */
+        await getDataProfile()
+        setLoadingDataProfile(false)
+        // console.log("fin de get img");
+      }
+      catch {
+        console.log(e);
+      }
+  
+      /* console.log(userData) */
     }
-    catch {
-      console.log(e);
-    }
-
-    /* console.log(userData) */
   }
 
 
@@ -177,9 +188,15 @@ function Profile(props) {
             <div className="mb-3">
               <label htmlFor="imageInput" className="form-label">Name</label>
               <input type="file" className="form-control" id="imageInput" placeholder="Type a name or nickname" onChange={(e)=> setImageFile(e.target.files[0])}/>
+              <div id="emailHelp" className="form-text">If you want to keep the current profile pic, don't upload another image.</div>
             </div>
             <input type="submit" className="btn btn-dark mt-4 w-100" value="Update profile"/>
+            {error? 
+              <div className="text-danger mt-2">{error}</div>
+              : <></>
+            }
           </form>
+
         </div>
 
       </div>

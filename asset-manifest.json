@@ -1,17 +1,18 @@
 {
   "files": {
-    "main.js": "/phone-book-firebase/static/js/main.827a6392.chunk.js",
-    "main.js.map": "/phone-book-firebase/static/js/main.827a6392.chunk.js.map",
+    "main.js": "/phone-book-firebase/static/js/main.bbbb2796.chunk.js",
+    "main.js.map": "/phone-book-firebase/static/js/main.bbbb2796.chunk.js.map",
     "runtime-main.js": "/phone-book-firebase/static/js/runtime-main.23d639c9.js",
     "runtime-main.js.map": "/phone-book-firebase/static/js/runtime-main.23d639c9.js.map",
     "static/js/2.9890ba83.chunk.js": "/phone-book-firebase/static/js/2.9890ba83.chunk.js",
     "static/js/2.9890ba83.chunk.js.map": "/phone-book-firebase/static/js/2.9890ba83.chunk.js.map",
     "index.html": "/phone-book-firebase/index.html",
-    "static/js/2.9890ba83.chunk.js.LICENSE.txt": "/phone-book-firebase/static/js/2.9890ba83.chunk.js.LICENSE.txt"
+    "static/js/2.9890ba83.chunk.js.LICENSE.txt": "/phone-book-firebase/static/js/2.9890ba83.chunk.js.LICENSE.txt",
+    "static/media/mati.c43e6b72.png": "/phone-book-firebase/static/media/mati.c43e6b72.png"
   },
   "entrypoints": [
     "static/js/runtime-main.23d639c9.js",
     "static/js/2.9890ba83.chunk.js",
-    "static/js/main.827a6392.chunk.js"
+    "static/js/main.bbbb2796.chunk.js"
   ]
 }

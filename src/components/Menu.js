@@ -19,10 +19,9 @@ function Menu(props) {
 
   return (
     <header>
-      <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
-        <div className="container-fluid">
+      <nav className="navbar navbar-dark bg-dark navbar-expand-lg d-flex justify-content-between">
 
-              <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <ul className="navbar-nav px-2 mb-2 mb-lg-0">
               {props.currentUser? //Preguntó si recibió alguna respuestra sobre si hay usuario en linea
                 <>
                   <li className="nav-item"><Link className="nav-link" to='/'><i className="fas fa-home"/> Home</Link></li>
@@ -46,10 +45,10 @@ function Menu(props) {
             {props.currentUser? //Pregunto si recibió alguna respuestra sobre si hay usuario en linea
               <>
               {props.currentUser !== "noOne"?
-                <div className="d-flex">
-                  <Link className="nav-link" to='/profile'><span style={{color:"wheat"}} className="me-2">{props.userData? props.userData.nick : ""}</span></Link>
-                  <button className="btn btn-danger" onClick={logout}>Logout <i className="fas fa-sign-out-alt"/></button>
-                </div>
+                <ul className="navbar-nav px-2 mb-2 mb-lg-0">
+                  <li className="nav-item text-center"><Link className="nav-link" to='/profile'><span style={{color:"wheat"}}>{props.userData? props.userData.nick : ""}</span></Link></li>
+                  <li className="nav-item d-flex justify-content-center"><button className="btn btn-danger"  onClick={logout}>Logout <i className="fas fa-sign-out-alt"/></button></li>
+                </ul>
                 : 
                 <></>
               }
@@ -59,7 +58,6 @@ function Menu(props) {
             }
               
 
-        </div>
       </nav>
     </header>
   );

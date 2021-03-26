@@ -1,6 +1,5 @@
 import React from "react";
-import mati from './mati.png';
-
+/* import mati from './mati.png'; */
 
 function Footer() {
   /* 
@@ -11,9 +10,9 @@ function Footer() {
     </footer>
   */
   return (
-    <footer className="footer mt-auto d-flex justify-content-between fs-6" style={{height:"3rem", backgroundColor:"#CFD7C7"}}>
+    <footer className="footer mt-auto d-flex justify-content-end fs-6 px-2" style={{height:"3rem", backgroundColor:"#CFD7C7"}}>
       
-      <img className="rounded-circle pt-2 pb-2" src={mati}  /* className="App-logo rotate" */ alt="logo" />
+      {/* <img className="rounded-circle pt-2 pb-2" src={mati} alt="logo" /> */}
       <div className="d-flex align-items-center">
         <div style={{alignSelf: "center"}}>Hecho por Matías Ibarra</div>     
         <div className="d-flex justify-content-around fs-2" style={{minWidth:"4.5rem"}}>

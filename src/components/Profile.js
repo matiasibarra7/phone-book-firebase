@@ -119,7 +119,7 @@ function Profile(props) {
 
   return (
     <div className="container">
-      <h1 className="text-center mt-2">Profile</h1>
+      <h1 className="text-center mt-5">Profile</h1>
       <div className="row mt-5">
 
         <div className="col">

@@ -23,7 +23,7 @@ function Register(props) {
 
   return (
     <>
-      <h1 className="text-center mt-2">Register</h1>
+      <h1 className="text-center mt-5">Register</h1>
       <form className="container-fluid border mt-5" style={{maxWidth:"360px"}} onSubmit={registerUser}>
         <div className="mb-3">
           <label htmlFor="emailInput" className="form-label">Email</label>

@@ -150,7 +150,7 @@ function PhoneBook(props) {
 
   return (
     <>
-      <h1 className="text-center mt-2">Phone Book</h1>
+      <h1 className="text-center mt-5">Phone Book</h1>
       <div className="container mt-5">
         <div className="row">
 

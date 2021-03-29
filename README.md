@@ -1,4 +1,4 @@
-# Phone-book aplication
+# Phone-book app
 
 Esta es una aplicación desarrollada con React. Utiliza Bootstrap como framework CSS y Firebase para su persistencia. 
 

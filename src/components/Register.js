@@ -27,7 +27,7 @@ function Register(props) {
       <form className="container-fluid border mt-5" style={{maxWidth:"360px"}} onSubmit={registerUser}>
         <div className="mb-3">
           <label htmlFor="emailInput" className="form-label">Email</label>
-          <input type="email" className="form-control" id="emailInput" placeholder="Type a email for username" 
+          <input type="email" className="form-control" id="emailInput" placeholder="fake-mail@123.com" 
             onChange={(e) => setEmail(e.target.value)} />
         </div>
         <div className="mb-3">

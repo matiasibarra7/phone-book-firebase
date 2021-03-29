@@ -27,12 +27,12 @@ function Login() {
       <form className="container-fluid border mt-5" style={{maxWidth:"360px"}} onSubmit={loginUser}>
         <div className="mb-3">
           <label htmlFor="emailInput" className="form-label">Email</label>
-          <input type="text" className="form-control" id="emailInput" placeholder="Type a email for username" 
+          <input type="text" className="form-control" id="emailInput" placeholder="fake-mail@123.com" 
             onChange={(e) => setEmail(e.target.value)} />
         </div>
         <div className="mb-3">
           <label htmlFor="passInput" className="form-label">Password</label>
-          <input type="password" className="form-control" id="passInput" placeholder="Type a password" 
+          <input type="password" className="form-control" id="passInput" placeholder="Type your password" 
           onChange={(e) => setPassword(e.target.value)}  />
         </div>
         <div className="mb-3">

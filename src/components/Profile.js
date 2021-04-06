@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { store, db, /* auth */ } from "../firebaseConfig";
+import { useHistory } from 'react-router-dom'
+import { store, db, auth } from "../firebaseConfig";
 
 const exampleUser = "P5N8GPwMlwbegabdHgewSN0q0YO2"
 
@@ -9,6 +10,8 @@ function Profile(props) {
   const [gender, setGender] = useState('')
   const [imageFile, setImageFile] = useState('')
   const [error, setError] = useState(null)
+
+  const history = useHistory()
 
   const [dataProfile, setDataProfile] = useState(props.currentUserData)
 
@@ -116,6 +119,17 @@ function Profile(props) {
     }
   }
 
+  const deleteUser = async(e) => {
+    e.preventDefault()
+    auth.currentUser.delete()
+    .then(res => {
+        history.push('/login')
+        console.log("oh, no! muerto tu usuario " + props.currentUserId);
+    })
+    .catch(e => {
+      console.log(e)
+    })
+  }
 
   return (
     <div className="container">
@@ -183,10 +197,16 @@ function Profile(props) {
               : <></>
             }
           </form>
+          
+          <form onSubmit={deleteUser}>
+            <input type="submit" value="Delete account" className="btn btn-danger mt-5"/>
+          </form>
+
 
         </div>
 
       </div>
+
     </div>
   );
 }

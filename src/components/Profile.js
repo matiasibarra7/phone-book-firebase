@@ -119,16 +119,23 @@ function Profile(props) {
     }
   }
 
+
   const deleteUser = async(e) => {
     e.preventDefault()
-    auth.currentUser.delete()
-    .then(res => {
+    if (props.currentUserId === exampleUser) {
+      console.log("No puedes borrar a esta tipa");
+    } else {
+      try {
+        console.log("user deleted " + props.currentUserId);
+        await auth.currentUser.delete()
         history.push('/login')
-        console.log("oh, no! muerto tu usuario " + props.currentUserId);
-    })
-    .catch(e => {
-      console.log(e)
-    })
+      }
+      catch (e) {
+        props.showMessage('Only functional after a recently login')
+        console.log(e)
+      }
+
+    }
   }
 
   return (
@@ -198,7 +205,7 @@ function Profile(props) {
             }
           </form>
           
-          <form onSubmit={deleteUser}>
+          <form onSubmit={props.currentUserId === exampleUser? props.denyFeature : deleteUser}>
             <input type="submit" value="Delete account" className="btn btn-danger mt-5"/>
           </form>
 

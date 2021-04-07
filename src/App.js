@@ -95,7 +95,7 @@ function App() {
             <PhoneBook currentUser={currentUserId} denyFeature={denyFeature}/>
           </Route>
           <Route path="/profile">
-            <Profile currentUserId={currentUserId} setCurrentUserData={setCurrentUserData} currentUserData={currentUserData} denyFeature={denyFeature}/>
+            <Profile currentUserId={currentUserId} setCurrentUserData={setCurrentUserData} currentUserData={currentUserData} denyFeature={denyFeature} showMessage = {showMessage}/>
           </Route>
         </Switch>
 
